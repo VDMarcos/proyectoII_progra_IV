@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+    <script src="/js/menu.js"> </script>
+    <script src="controller.js"> </script>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+</head>
+<body>
+    <header class="header" id="menu"></header>
+
+    <!--list-->
+    <div class='container'>
+        <div class='row'>
+            <div class='col-6'>
+                <div class='col-12 text-centered cooper'>
+                    <input id="nombreBusqueda" type="text">
+                    <input id="search" class="boton" type="button" value="Buscar">
+                    <input id="new" class="boton" type="button" value="Crear">
+                </div>
+            </div>     
+        </div>
+        <div class='row'>
+            <div class='col-12'>      
+                <hr>
+            </div>
+        </div>        
+        <div class='row'>
+            <div class='col-6'>
+                <table class='container'>
+					<thead>
+						<tr >
+							<th >Cedula</th>
+							<th >Nombre</th>
+							<th >Sexo</th>
+							<th >...</th>
+                            <th >...</th>
+						</tr>
+					</thead>
+                    <tbody class='container' id='list'>
+                    </tbody>    
+                </table>  
+            </div>
+        </div>                        
+    </div>
+
+    <!--overly-->
+    <div id="itemoverlay" class="itemoverlay"></div>
+
+    <!--item-->
+    <div id="itemview" class='itemview'>
+        <div class='col-12'>
+            <div>
+                <form name="formulario">
+                    <div class='container'>
+                        <div class='row'><div class='col-12 text-centered cooper'>Perfil</div></div>
+                        <div class='row'><div class='col-3 text-right'>Cedula</div><div class='col-6'><input type="text" name="cedula" id="cedula" value=""></div></div>
+                        <div class='row'><div class='col-3 text-right'>Nombre</div><div class='col-6'><input type="text" name="nombre" id="nombre" value=""></div></div>
+                        <div class='row'><div class='col-3 text-right'>Sexo</div>
+                            <div class='col-6'>
+                                <table>
+                                    <tr>
+                                        <td><input type="radio" name="sexo" value="M" id="sexoMasc"></td>
+                                        <td id="tdMasc"></td>
+                                        <td><input type="radio" name="sexo" value="F" id="sexoFem"></td>
+                                        <td id="tdFem"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-6 text-centered cooper'>
+                                <input id="registrar" class="boton" type="button" value="Registrar">
+                                &nbsp
+                                <input id="cancelar" class="boton" type="button" value="Cancelar">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
