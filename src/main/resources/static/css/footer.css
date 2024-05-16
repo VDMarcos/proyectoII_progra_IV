@@ -1,0 +1,19 @@
+footer{
+    width: 100%;
+    background-color: aquamarine;
+    font-weight: bold;
+    font-family: "Bradley Hand ITC";
+    padding: 5px;
+    font-size:  x-large;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.logoF{
+    width: 250px;
+    border-radius: 20%;
+}

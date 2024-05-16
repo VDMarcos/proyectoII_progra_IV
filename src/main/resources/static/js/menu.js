@@ -32,8 +32,9 @@ function render_menu() {
     if (!loginstate.logged) {
         html = `
             <div class="logo">
-                <span>Personas</span>
+                <span>Sistema <span></span></span>
                 <img src="/Images/logo.png">
+                <span></span>
             </div>
             <div>
                 <ul class="Menu">
@@ -42,7 +43,15 @@ function render_menu() {
                 </ul>
             </div>
         `;
+        html2 = `
+            <div class="Footer">
+            <div class="logoF">
+                <span>@factura_electronica.com</span>
+                 <img class ="logoF" src="/Images/logo.png">
+            </div>
+        `;
         document.querySelector('#menu').innerHTML = html;
+        document.querySelector('#footer').innerHTML = html2;
         document.querySelector("#menu #loginlink").addEventListener('click', ask);
         render_loginoverlay();
         render_loginview();
@@ -56,19 +65,31 @@ function render_menu() {
             <div>
                 <ul class="Menu">
                     <li id="bienvenidalink"><a href="#"> Bienvenida</a></li>
-                    <li id="personaslink"><a href="#"> Personas</a></li>
+                    <li id="clienteslink"><a href="#"> Clientes</a></li>
+                    <li id="productoslink"><a href="#"> Productos</a></li>                    
                     <li id="logoutlink"><a href="#"> Logout</a></li>
                 </ul>
             </div>
             <div class="user">&nbsp &nbsp ${loginstate.user.id}</div>
         `;
+        html2 = `
+            <div class="Footer">
+            <div class="logoF">
+                <span>@factura_electronica.com</span>
+                 <img class ="logoF" src="/Images/logo.png">
+            </div>
+        `;
         document.querySelector('#menu').innerHTML = html;
+        document.querySelector('#footer').innerHTML = html2;
         document.querySelector("#menu #logoutlink").addEventListener('click', logout);
         document.querySelector("#menu #bienvenidalink").addEventListener('click', e => {
             document.location = "/pages/login/view.html";
         });
-        document.querySelector("#menu #personaslink").addEventListener('click', e => {
-            document.location = "/pages/personas/view.html";
+        document.querySelector("#menu #clienteslink").addEventListener('click', e => {
+            document.location = "/pages/clientes/view.html";
+        });
+        document.querySelector("#menu #productoslink").addEventListener('click', e => {
+            document.location = "/pages/productos/view.html";
         });
     }
 }
@@ -138,7 +159,7 @@ function login(){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        document.location="/pages/personas/view.html";
+        document.location="/pages/clientes/view.html";
     })();
 }
 

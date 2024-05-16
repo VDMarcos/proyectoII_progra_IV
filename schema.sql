@@ -66,3 +66,9 @@ alter table Proveedor add estado bool;
 INSERT INTO usuario (id, clave, rol)
 VALUES ('admin', '{bcrypt}$2a$12$BsXiUUSUneCs6qWmRJONL.bPWf2e94pkJynYWNQ7GeZcukriMEyoq', 'ADM'),
        ('marcos', '{bcrypt}$2a$12$BsXiUUSUneCs6qWmRJONL.bPWf2e94pkJynYWNQ7GeZcukriMEyoq', 'PRO');
+
+insert into proveedor (id, nombre, correo, telefono, estado) 
+values ('marcos', 'Marcos', 'marcos@gmail.com', '9999', true);
+
+insert into cliente (id, nombre, correo, telefono, proveedoridc) values 
+('111', 'Gabo', 'Gabo@gmail.com', '7777', 'marcos');

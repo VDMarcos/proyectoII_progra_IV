@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sistema Facturacion</title>
+    <script src="/js/menu.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" href="../../css/clientes.css">
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+<body>
+<header class="header" id="menu"></header>
+<div class="Body">
+    <div class="table-container">
+        <table class="table">
+            <caption>Clientes</caption>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Identificacion</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="listClientes">
+
+
+            </tbody>
+        </table>
+    </div>
+    <div class="form-container">
+        <h1 class="caption">Editar...</h1>
+        <form method="POST" id="editForm">
+            <div class="form">
+                <div></div><div></div><div></div><div></div>
+                <div>
+                    <label>Identificacion</label>
+                    <input type="text">
+                    <div class="error-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">
+
+                    </div>
+                </div>
+                <div>
+                    <label>Nombre</label>
+                    <input type="text">
+                    <div class="error-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+
+                    </div>
+                </div>
+                <div>
+                    <label>Correo</label>
+                    <input type="text"">
+                    <div class="error-feedback" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">
+
+                    </div>
+                </div>
+                <div>
+                    <label>Telefono</label>
+                    <input type="text" >
+                    <div class="error-feedback" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" name="Crear" value="Crear" id="Crear">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<footer id="footer"></footer>
+</body>
+</html>

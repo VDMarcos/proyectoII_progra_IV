@@ -7,12 +7,12 @@
 
 .logo>span{
     font-size: 1.8em;
-    color:  #ff884d;
+    color: black;;
     width: 50%;
 }
 
 .header{
-    background-color: #ffeee6 ;
+    background-color: aquamarine;
     font-weight: bold;
     font-family: "Bradley Hand ITC";
     padding: 5px;
@@ -82,14 +82,14 @@
 }
 
 .cooper {
-    background-color: #ea6153;
+    background-color: black;
     color: #ffffff;
 }
 
 .titulo{
     font-weight: bold;
     text-align:center;
-    background-color: #ea6153;
+    background-color: black;
     color: #ffffff;
 }
 

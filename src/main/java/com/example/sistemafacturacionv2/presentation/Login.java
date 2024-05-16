@@ -16,8 +16,8 @@ public class Login {
     @PostMapping("/login")
     public Usuario login(@RequestBody Usuario form, HttpServletRequest request) {
         try {
-            System.out.println(form.getId());
-            System.out.println(form.getClave());
+            //System.out.println(form.getRol());
+//            System.out.println(form.getClave());
             request.login(form.getId(), form.getClave());
         } catch (ServletException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
@@ -28,6 +28,7 @@ public class Login {
         usuario.setId(user.getId());
         usuario.setClave(null);
         usuario.setRol(user.getRol());
+        System.out.println(usuario.getRol());
         return usuario;
     }
 
