@@ -1,10 +1,12 @@
 package com.example.sistemafacturacionv2.logic;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.Objects;
 
+@JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = LazyFieldsFilter.class)
 @Entity
 public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

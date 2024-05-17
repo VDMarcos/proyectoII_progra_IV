@@ -9,9 +9,16 @@ import java.util.List;
 @Service("ServiceCliente")
 public class ServiceCliente {
     @Autowired
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
 
     public List<Cliente> getClientesByProveedor(String id){
         return clienteRepository.findByProveedor(id);
+    }
+
+    public List<Cliente> getClientesByNombre(String id, String nombre){
+        if(nombre.equals("")){
+            return clienteRepository.findByProveedor(id);
+        }
+        return clienteRepository.findByProveedorAndNombre(id, nombre);
     }
 }

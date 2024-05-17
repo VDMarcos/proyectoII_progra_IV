@@ -14,10 +14,25 @@ public class Clientes {
     @Autowired
     private ServiceCliente serviceCliente;
 
+    private String idAc;
+
     @GetMapping("/{id}")
     List<Cliente> getAll(@PathVariable String id) {
-        return serviceCliente.getClientesByProveedor(id);
+        idAc = id;
+        List<Cliente> clientes = serviceCliente.getClientesByProveedor(id);
+        for(Cliente cliente : clientes){
+            cliente.setproveedorByProveedoridc2(null);
+        }
+        return clientes;
     }
 
+    @GetMapping("/search")
+    List<Cliente> getByName(@RequestParam String nombre) {
+        List<Cliente> clientes = serviceCliente.getClientesByNombre(idAc, nombre);
+        for(Cliente cliente : clientes){
+            cliente.setproveedorByProveedoridc2(null);
+        }
+        return clientes;
+    }
 
 }

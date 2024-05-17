@@ -72,3 +72,6 @@ values ('marcos', 'Marcos', 'marcos@gmail.com', '9999', true);
 
 insert into cliente (id, nombre, correo, telefono, proveedoridc) values 
 ('111', 'Gabo', 'Gabo@gmail.com', '7777', 'marcos');
+
+insert into cliente (id, nombre, correo, telefono, proveedoridc) values 
+('222', 'Anner', 'Anner@gmail.com', '7777', 'marcos');

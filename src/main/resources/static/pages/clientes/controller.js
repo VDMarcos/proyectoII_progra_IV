@@ -2,7 +2,7 @@ var api=backend+'/clientes';
 
 var state ={
     list: new Array(),
-    item : {id:"", nombre:"",correo:"",telefono:""},
+    item : {numcliente:"", id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
     mode: "" // ADD, EDIT
 }
 
@@ -87,7 +87,7 @@ async function loaded(event){
     //}
    // else{
     //    state = JSON.parse(state_json);
-        document.getElementById("search").value = state.item.id;
+        //document.getElementById("search").value = state.item.id;
      //   render_list_Clientes();
    // }
 }
@@ -110,7 +110,7 @@ function fetchAndListClientes(id){
 
 function render_list_Clientes(){
     var listado=document.getElementById("listClientes");
-    listado.innerHTML="";
+    listado.innerHTML='';
     state.list.forEach( item=>render_list_Clientes_item(listado,item));
 }
 
@@ -121,4 +121,16 @@ function render_list_Clientes_item(listado,item){
 					<td>${item.correo}</td>
 					<td>${item.telefono}</td>`;
     listado.append(tr);
+}
+
+function search(){
+    nombreBusqueda = document.getElementById("search").value;
+    const request = new Request(api+`/search?nombre=${nombreBusqueda}`,
+        {method: 'GET', headers: { }});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}
+        state.list = await response.json();
+        render_list_Clientes();
+    })();
 }

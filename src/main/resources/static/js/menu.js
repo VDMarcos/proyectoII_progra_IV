@@ -111,8 +111,7 @@ function render_loginview() {
             <div>
                 <form name="formulario">
                     <div class='container'>
-                        <div class="heading"> Login </div>
-                        <div><img class="logo" src="/Images/logo.png"></div>  
+                        <div><img class="logoForm" src="/Images/logo.png"></div>  
                         <div class='row'><div class='col-12 text-centered cooper'>Login</div></div>
                         <div class='row'><div class='col-3 text-right'>Id</div><div class='col-6'><input type="text" name="id" id="id" value=""></div></div>
                         <div class='row'><div class='col-3 text-right'>Clave</div><div class='col-6'><input type="password" name="password" id="clave" value=""></div></div>

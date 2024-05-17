@@ -1,71 +1,66 @@
-   ul.Menu {
-		font-size: 0px; /* Sin espacio entre opciones */
-   }
-	ul.Menu li{ /* Establece tamaño letra */
-		font-size:  x-large;
-	}
+ul.Menu {
+	font-size: 0px; /* Sin espacio entre opciones */
+}
+ul.Menu li{ /* Establece tamaño letra */
+	font-size:  x-large;
+}
 
-	/*Estilo de las listas del menu y submenues*/
-	ul.Menu, ul.Menu li ul {
-		padding:0;
-		list-style: none;
-	}
+/*Estilo de las listas del menu y submenues*/
+ul.Menu, ul.Menu li ul {
+	padding:0;
+	list-style: none;
+}
 
-	/* Ancho del menu y del submenu */
-	ul.Menu li a, ul.Menu li ul{
-		width: 6em;
-	}
-	
-	/* Opciones (y sus bloques)  horizontalmente*/
-	ul.Menu li{
-		display: inline-block;
-		vertical-align:top;
-	}
+/* Ancho del menu y del submenu */
+ul.Menu li a, ul.Menu li ul{
+	width: 6em;
+}
 
-	/*MENU NORMAL*/
-	ul.Menu li>a {
-		background-color: aquamarine;
-		font-weight: bold;
-		font-family: "Bradley Hand ITC";
-		font-size:  x-large;
-		text-decoration: none;
-		display: inline-block;
-	}
+/* Opciones (y sus bloques)  horizontalmente*/
+ul.Menu li{
+	display: inline-block;
+	vertical-align:top;
+}
 
-	/*MENU SELECCIONADO*/
-	ul.Menu li a:hover{
-		color: cornflowerblue;
-	}
-	
-	/* OCULTA SUBMENU por default */
-	ul.Menu li ul {
-		position: absolute;
-		background-color: #ffeee6;
-		display: none;
-	}
-	
-	/*MUESTRA SUBMENU cuando el mouse esta encima del menu*/
-	ul.Menu li:hover ul{
-		display: block;
-	}
+/*MENU NORMAL*/
+ul.Menu li>a {
+	background-color: aquamarine;
+	font-weight: bold;
+	font-family: "Bradley Hand ITC";
+	font-size:  x-large;
+	text-decoration: none;
+	display: inline-block;
+}
 
-	/*SUBMENU NORMAL*/
-	ul.Menu li:hover ul li a{
-		color: lightblue;
-		padding: 2px 16px 2px 10px;
-	}
+/*MENU SELECCIONADO*/
+ul.Menu li a:hover{
+	color: cornflowerblue;
+}
 
-	/*SUMBENU SELECCIONADO*/
-	ul.Menu li:hover ul li a:hover{
-		color: skyblue;
-	}
+/* OCULTA SUBMENU por default */
+ul.Menu li ul {
+	position: absolute;
+	background-color: #ffeee6;
+	display: none;
+}
 
-	.user{
-		font-size: large;
-		color: blue;
-	}
-	
-	
-	
-	
-	
+/*MUESTRA SUBMENU cuando el mouse esta encima del menu*/
+ul.Menu li:hover ul{
+	display: block;
+}
+
+/*SUBMENU NORMAL*/
+ul.Menu li:hover ul li a{
+	color: lightblue;
+	padding: 2px 16px 2px 10px;
+}
+
+/*SUMBENU SELECCIONADO*/
+ul.Menu li:hover ul li a:hover{
+	color: skyblue;
+}
+
+.user{
+	font-size: large;
+	color: blue;
+}

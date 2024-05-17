@@ -15,6 +15,17 @@
         <table class="table">
             <caption>Clientes</caption>
             <thead>
+            <tr class="searchRow">
+                <td colspan="4">
+                    <input type="text" id="search" name="nombre" placeholder="Buscar...">
+                <td>
+                    <input type="image" id="iconoBuscar" src="../../Images/iconoBuscar.png">
+                </td>
+                <td>
+                    <img src="../../Images/editar.png" alt="edit" id="edit3" style="cursor: pointer;" onclick="edit()"/>
+                </td>
+                </td>
+            </tr>
             <tr>
                 <th></th>
                 <th>Identificacion</th>
@@ -25,8 +36,6 @@
             </tr>
             </thead>
             <tbody id="listClientes">
-
-
             </tbody>
         </table>
     </div>

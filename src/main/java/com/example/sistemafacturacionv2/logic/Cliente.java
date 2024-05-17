@@ -1,11 +1,13 @@
 package com.example.sistemafacturacionv2.logic;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
+import com.example.sistemafacturacionv2.logic.LazyFieldsFilter;
 import java.util.Collection;
 import java.util.Objects;
 
+@JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = LazyFieldsFilter.class)
 @Entity
 public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,6 +85,10 @@ public class Cliente {
 
     public void setProveedoridc(String proveedoridc) {
         this.proveedoridc = proveedoridc;
+    }
+
+    public void setproveedorByProveedoridc2(Proveedor proveedoridc){
+        this.proveedorByProveedoridc = proveedoridc;
     }
 
     @Override
