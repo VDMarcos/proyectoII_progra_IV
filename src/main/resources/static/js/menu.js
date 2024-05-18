@@ -182,6 +182,7 @@ function errorMessage(status,place){
         case 409: error="Registro duplicado"; break;
         case 401: error="Usuario no autorizado"; break;
         case 403: error="Usuario no tiene derechos"; break;
+        case 405: error="Campos vacios";break;
     }
     window.alert(error);
 }

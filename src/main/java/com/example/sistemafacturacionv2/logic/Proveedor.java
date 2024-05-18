@@ -1,11 +1,13 @@
 package com.example.sistemafacturacionv2.logic;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Collection;
 import java.util.Objects;
 
+@JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = LazyFieldsFilter.class)
 @Entity
 public class Proveedor {
    // @GeneratedValue(strategy = GenerationType.IDENTITY)

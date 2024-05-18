@@ -2,7 +2,7 @@ var api=backend+'/clientes';
 
 var state ={
     list: new Array(),
-    item : {numcliente:"", id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
+    item : {id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
     mode: "" // ADD, EDIT
 }
 
@@ -79,17 +79,18 @@ async function loaded(event){
 
     //document.getElementById("itemoverlay").addEventListener("click",toggle_itemview);
 
-    document.querySelector("#itemview #Crear").addEventListener("click",add);
+    document.getElementById("Crear").addEventListener("click",add);
     //document.querySelector("#itemview #cancelar").addEventListener("click",toggle_itemview);
 
-    // state_json = sessionStorage.getItem("clientes");
-    // if(!state_json) {
-    //}
-   // else{
-    //    state = JSON.parse(state_json);
-        //document.getElementById("search").value = state.item.id;
-     //   render_list_Clientes();
-   // }
+    state_json = sessionStorage.getItem("clientes");
+    if(!state_json) {
+        fetchAndListClientes(loginstate.user.id);
+    }
+   else{
+       state = JSON.parse(state_json);
+       document.getElementById("search").value = state.item.id;
+       render_list_Clientes();
+   }
 }
 
 async function unloaded(event){
@@ -133,4 +134,80 @@ function search(){
         state.list = await response.json();
         render_list_Clientes();
     })();
+}
+
+function add(){
+    load_item();
+    if(validate()) return;
+    let request = new Request(api+`/add`, {method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(state.item)});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessageC(response.status);return;}
+        //toggle_itemview()
+        fetchAndListClientes(loginstate.user.id);
+    })();
+}
+
+function toggle_itemview(){
+    document.getElementById("itemoverlay").classList.toggle("active");
+    document.getElementById("itemview").classList.toggle("active");
+}
+
+function load_item(){
+    state.item = {
+        id:document.getElementById("idForm").value,
+        nombre:document.getElementById("nombreForm").value,
+        correo:document.getElementById("correoForm").value,
+        telefono:document.getElementById("telForm").value,
+        proveedoridc:loginstate.user.id
+    };
+}
+
+function validate(){
+    let error = false;
+
+    // Limpiar cualquier clase de error previa
+    document.querySelectorAll('input').forEach((i) => { i.classList.remove("invalid"); });
+
+    if (state.item.nombre.length === 0) {
+        document.querySelector("#nombreForm").classList.add("invalid");
+        error = true;
+    }
+
+    if (state.item.id.length === 0) {
+        document.querySelector("#idForm").classList.add("invalid");
+        error = true;
+    }
+
+    if (state.item.correo.length === 0) {
+        document.querySelector("#correoForm").classList.add("invalid");
+        error = true;
+    }
+
+    if (state.item.telefono.length === 0) {
+        document.querySelector("#telForm").classList.add("invalid");
+        error = true;
+    }
+
+    if (error) {
+        errorMessageC(405);
+    }
+    return error;
+}
+
+function errorMessageC(code) {
+    let message;
+    switch (code) {
+        case 405:
+            message = "Por favor, complete todos los campos.";
+            break;
+        case 409:
+            message = "Error al añadir el ítem, debido a que, está repetido. Intente nuevamente.";
+            break;
+        default:
+            message = "Ha ocurrido un error.";
+    }
+    window.alert(message);
 }

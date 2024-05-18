@@ -41,35 +41,24 @@
     </div>
     <div class="form-container">
         <h1 class="caption">Editar...</h1>
-        <form method="POST" id="editForm">
+        <form id="editForm">
             <div class="form">
                 <div></div><div></div><div></div><div></div>
                 <div>
                     <label>Identificacion</label>
-                    <input type="text">
-                    <div class="error-feedback" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">
-
-                    </div>
+                    <input type="text" id="idForm">
                 </div>
                 <div>
                     <label>Nombre</label>
-                    <input type="text">
-                    <div class="error-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
-
-                    </div>
+                    <input type="text" id="nombreForm">
                 </div>
                 <div>
                     <label>Correo</label>
-                    <input type="text"">
-                    <div class="error-feedback" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">
-
-                    </div>
+                    <input type="text" id="correoForm">
                 </div>
                 <div>
                     <label>Telefono</label>
-                    <input type="text" >
-                    <div class="error-feedback" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">
-                    </div>
+                    <input type="text" id="telForm">
                 </div>
                 <div>
                     <input type="submit" name="Crear" value="Crear" id="Crear">

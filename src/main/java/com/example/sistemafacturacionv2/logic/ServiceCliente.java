@@ -21,4 +21,14 @@ public class ServiceCliente {
         }
         return clienteRepository.findByProveedorAndNombre(id, nombre);
     }
+
+    public void addCliente(Cliente cliente){
+        List<Cliente> clientes = clienteRepository.findByProveedor(cliente.getProveedoridc());
+        for(Cliente c : clientes){
+            if(c.getId().equals(cliente.getId())){
+                throw new RuntimeException("Cliente ya existe");
+            }
+        }
+        clienteRepository.save(cliente);
+    }
 }
