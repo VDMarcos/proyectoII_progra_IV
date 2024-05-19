@@ -145,9 +145,7 @@ input.invalid {
     background: #ffece6;
 }
 
-#list:nth-child(even) {
-    background: #ffb399;
-}
+
 
 #list tr:hover {
     background: cadetblue;
