@@ -25,4 +25,7 @@ public interface ClienteRepository extends CrudRepository<Cliente, Integer>{
 
     @Query("select c from Cliente c where c.proveedorByProveedoridc.id = ?1 and c.nombre = ?2")
     Cliente findByProAndNom(String id, String nom);
+
+    @Query("select c from Cliente c where c.id = ?1")
+    Cliente findfById(String id);
 }

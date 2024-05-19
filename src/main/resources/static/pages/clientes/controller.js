@@ -3,7 +3,9 @@ var api=backend+'/clientes';
 var state ={
     list: new Array(),
     item : {id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
-    mode: "" // ADD, EDIT
+    itemE: {id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
+    mode: "", // ADD, EDIT
+    nomBus: ""
 }
 
 async function checkuserC(){
@@ -75,6 +77,7 @@ async function loaded(event){
     try{ await menu();} catch(error){return;}
 
     document.getElementById("iconoBuscar").addEventListener("click",search);
+    //document.getElementById("EditarB").hidden=true;
     //document.getElementById("new").addEventListener("click",ask);
 
     //document.getElementById("itemoverlay").addEventListener("click",toggle_itemview);
@@ -88,8 +91,9 @@ async function loaded(event){
     }
    else{
        state = JSON.parse(state_json);
-       document.getElementById("search").value = state.item.id;
-       render_list_Clientes();
+       document.getElementById("search").value = state.nomBus;
+       await search();
+       sessionStorage.setItem("clientes", JSON.stringify(state));
    }
 }
 
@@ -117,22 +121,27 @@ function render_list_Clientes(){
 
 function render_list_Clientes_item(listado,item){
     var tr =document.createElement("tr");
-    tr.innerHTML=`<td></td><td>${item.id}</td>
+    tr.innerHTML=  `<td id="checkC"><img src="../../Images/check.png" id="edit2"></td>
+                    <td>${item.id}</td>
 					<td>${item.nombre}</td>
 					<td>${item.correo}</td>
-					<td>${item.telefono}</td>`;
+					<td>${item.telefono}</td>
+                    <td id="editC"><img src="../../Images/editar.png" id="edit1"></td>`;
+    tr.querySelector("#editC").addEventListener("click",()=>{edit(item.id);});
+    //tr.querySelector("#checkC").addEventListener("click",()=>{remove(item.id);})   // aca hay que agregar la funcionalidad del check
     listado.append(tr);
 }
 
 function search(){
     nombreBusqueda = document.getElementById("search").value;
+    state.nomBus = nombreBusqueda;
     const request = new Request(api+`/search?nombre=${nombreBusqueda}`,
         {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         state.list = await response.json();
-        render_list_Clientes();
+        await render_list_Clientes();
     })();
 }
 
@@ -146,7 +155,8 @@ function add(){
         const response = await fetch(request);
         if (!response.ok) {errorMessageC(response.status);return;}
         //toggle_itemview()
-        fetchAndListClientes(loginstate.user.id);
+       await fetchAndListClientes(loginstate.user.id);
+        document.getElementById("Crear").value = "Crear";
     })();
 }
 
@@ -204,10 +214,32 @@ function errorMessageC(code) {
             message = "Por favor, complete todos los campos.";
             break;
         case 409:
-            message = "Error al añadir el ítem, debido a que, está repetido. Intente nuevamente.";
+            message = "Error al añadir el item, debido a que, esta repetido. Intente nuevamente.";
             break;
         default:
             message = "Ha ocurrido un error.";
     }
     window.alert(message);
+}
+
+function edit(id){
+    let request = new Request(api+`/get/${id}`,
+        {method: 'GET', headers: {}});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}
+        state.itemE = await response.json();
+        //toggle_itemview();
+        state.mode="EDIT";
+        document.getElementById("Crear").value = "Editar";
+        render_item();
+    })();
+}
+
+function render_item(){
+    document.querySelectorAll('#itemview input').forEach( (i)=> {i.classList.remove("invalid");});
+    document.getElementById("idForm").value = state.itemE.id;
+    document.getElementById("nombreForm").value = state.itemE.nombre;
+    document.getElementById("correoForm").value = state.itemE.correo;
+    document.getElementById("telForm").value = state.itemE.telefono;
 }

@@ -22,7 +22,7 @@ public class Clientes {
     List<Cliente> getAll(@PathVariable String id) {
         idAc = id;
         List<Cliente> clientes = serviceCliente.getClientesByProveedor(id);
-        for(Cliente cliente : clientes){
+        for (Cliente cliente : clientes) {
             cliente.setproveedorByProveedoridc2(null);
         }
         return clientes;
@@ -31,7 +31,7 @@ public class Clientes {
     @GetMapping("/search")
     List<Cliente> getByName(@RequestParam String nombre) {
         List<Cliente> clientes = serviceCliente.getClientesByNombre(idAc, nombre);
-        for(Cliente cliente : clientes){
+        for (Cliente cliente : clientes) {
             cliente.setproveedorByProveedoridc2(null);
         }
         return clientes;
@@ -43,9 +43,15 @@ public class Clientes {
             System.out.println(cliente.getNombre());
             cliente.setProveedoridc(idAc);
             serviceCliente.addCliente(cliente);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
+    }
+
+    @GetMapping("/get/{id}")
+    Cliente getCliente(@PathVariable String id) {
+        Cliente cliente = serviceCliente.getClienteById(id);
+        cliente.setproveedorByProveedoridc2(null);
+        return cliente;
     }
 }
