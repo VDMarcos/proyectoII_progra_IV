@@ -7,14 +7,31 @@ var state ={
 }
 
 document.addEventListener("DOMContentLoaded",loaded);
-
+document.addEventListener('visibilitychange',unloaded)
 async function loaded(event){
     try{await menu();} catch(error){return;}
 
     document.getElementById("iconoBuscar").addEventListener("click",search);
     document.getElementById("crear").addEventListener("click",add);
 
-    fetchAndListProductos(loginstate.user.id);
+    state_json=sessionStorage.getItem("productos");
+
+    if(!state_json){
+        fetchAndListProductos(loginstate.user.id);
+    }else{
+        state=JSON.parse(state_json);
+        if(state.mode=="search"){
+            document.getElementById("search").value=state.nombre;
+        }
+        if(state.mode=="EDIT"){render_item();}
+        render_list();
+    }
+}
+
+async function unloaded(event){
+    if (document.visibilityState=="hidden"&& loginstate.logged){
+        sessionStorage.setItem("productos",JSON.stringify(state));
+    }
 }
 
 function fetchAndListProductos(proveedor){
@@ -33,6 +50,7 @@ function render_list(){
     listado.innerHTML="";
 
     state.list.forEach( item=>render_list_item(listado,item));
+
 }
 
 function render_list_item(listado,item){
@@ -71,8 +89,8 @@ function render_item(){
 
 function add(){
     load_item();
-
-    //if(!validate_item()) return;
+    state.mode="ADD"
+    if(!validate_item()) return;
     let request = new Request(api, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(state.item)});
@@ -94,9 +112,9 @@ function load_item(){
 }
 
 function search(){
-    nombreBusqueda = document.getElementById("search").value;
-
-    const request = new Request(api+`/search?nombre=${nombreBusqueda}`,
+    state.nombre = document.getElementById("search").value;
+    state.mode="search";
+    const request = new Request(api+`/search?nombre=${state.nombre}`,
         {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
@@ -105,4 +123,31 @@ function search(){
         console.log("Response list: ", state.list);
         render_list();
     })();
+}
+
+function validate_item(){
+    var error=false;
+
+    document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
+
+    if (state.item.codigo.length==0){
+        document.querySelector("#codigo").classList.add("invalid");
+        error=true;
+    }
+
+    if (state.item.nombre.length==0){
+        document.querySelector("#nombre").classList.add("invalid");
+        error=true;
+    }
+    if (state.item.cantidad.length==0){
+        document.querySelector("#cantidad").classList.add("invalid");
+        error=true;
+    }
+    if (state.item.precio.length==0){
+        document.querySelector("#precio").classList.add("invalid");
+        error=true;
+    }
+
+
+    return !error;
 }
