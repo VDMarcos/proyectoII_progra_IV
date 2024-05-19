@@ -91,10 +91,19 @@ async function loaded(event){
     }
    else{
        state = JSON.parse(state_json);
-       document.getElementById("search").value = state.nomBus;
-       await search();
-       sessionStorage.setItem("clientes", JSON.stringify(state));
-   }
+        if(state.mode=="EDIT") {
+            render_item();
+            render_list();
+            //state.mode=="";
+        }
+        else
+        {
+            document.getElementById("search").value = state.nomBus;
+            await search();
+            sessionStorage.setItem("clientes", JSON.stringify(state));
+        }
+        sessionStorage.setItem("clientes", JSON.stringify(state));
+    }
 }
 
 async function unloaded(event){
@@ -133,6 +142,7 @@ function render_list_Clientes_item(listado,item){
 }
 
 function search(){
+    state.mode="search";
     nombreBusqueda = document.getElementById("search").value;
     state.nomBus = nombreBusqueda;
     const request = new Request(api+`/search?nombre=${nombreBusqueda}`,
