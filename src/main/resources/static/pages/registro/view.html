@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <script src="../../js/menu.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <link rel="stylesheet" href="../../css/registrarse.css">
+
+
+</head>
+<body>
+<header class="header" id="menu"></header>
+    <div class="form">
+        <p>Usuario</p>
+        <div>
+            <label>Identificacion</label>
+            <input type="text" id="idUser">
+        </div>
+        <div>
+            <label>Clave</label>
+            <input type="password" id="claveUser">
+        </div>
+        <div class="container"> <input type="submit" id="crear" name="Crear" value="Crear"></div>
+     </div>
+
+
+
+        <div id="itemview" class='itemview'>
+            <div class="formProveerdor">
+                <p>Complete la informacion del Proveedor</p>
+                <div>
+                    <label>Identificacion</label>
+                    <input type="text" id="idP"  disabled/>
+
+                    <div>
+                        <label>Nombre</label>
+                        <input type="text" id="nombre">
+
+
+                    </div>
+                    <div>
+                        <label>Correo</label>
+                        <input type="email" id="correo">
+                    </div>
+
+
+                </div>
+                <div>
+                    <label>Telefono</label>
+                    <input type="text" id="telefono">
+
+
+                </div>
+                <div class="container"> <input id="proveedor" type="submit" value="Crear"></div>
+            </div>
+
+        </div>
+<footer id="footer"></footer>
+</body>
+</html>

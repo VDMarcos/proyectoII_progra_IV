@@ -66,7 +66,8 @@ function render_menu() {
                 <ul class="Menu">
                     <li id="bienvenidalink"><a href="#"> Bienvenida</a></li>
                     <li id="clienteslink"><a href="#"> Clientes</a></li>
-                    <li id="productoslink"><a href="#"> Productos</a></li>                    
+                    <li id="productoslink"><a href="#"> Productos</a></li>  
+                    <li id="productoslink"><a href="#"> Facturar</a></li>            
                     <li id="logoutlink"><a href="#"> Logout</a></li>
                 </ul>
             </div>
@@ -90,6 +91,9 @@ function render_menu() {
         });
         document.querySelector("#menu #productoslink").addEventListener('click', e => {
             document.location = "/pages/productos/view.html";
+        });
+        document.querySelector("#menu #facturarlink").addEventListener('click', e => {
+            document.location = "/pages/facturar/view.html";
         });
     }
 }
@@ -120,7 +124,9 @@ function render_loginview() {
                                 <input id="login" class="boton" type="button" value="Login">
                                 &nbsp
                                 <input id="cancelar" class="boton" type="button" value="Cancelar">
+                                <input id="registro" class="boton" type="button" value="registrarse">
                             </div>
+                            
                         </div>
                     </div>
                 </form>
@@ -133,6 +139,7 @@ function render_loginview() {
     document.body.appendChild(view);
     document.querySelector("#loginview #login").addEventListener("click",login);
     document.querySelector("#loginview #cancelar").addEventListener("click",toggle_loginview);
+    document.getElementById("registro").addEventListener("click", registro )
 }
 
 function ask(event){
@@ -160,6 +167,10 @@ function login(){
         if (!response.ok) {errorMessage(response.status);return;}
         document.location="/pages/clientes/view.html";
     })();
+}
+
+function registro(){
+        document.location="/pages/registro/view.html";
 }
 
 function logout(event){

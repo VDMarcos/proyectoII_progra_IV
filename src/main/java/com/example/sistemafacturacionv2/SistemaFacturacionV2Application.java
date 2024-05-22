@@ -22,7 +22,8 @@ public class SistemaFacturacionV2Application {
 				.authorizeHttpRequests(customizer -> customizer
 						.requestMatchers("/api/login/login").permitAll()
 						.requestMatchers("/api/login/logout").authenticated()
-						.requestMatchers(HttpMethod.POST,"/api/**").hasAnyAuthority("ADM","PRO")
+						.requestMatchers("/api/registro/**").permitAll()
+						//.requestMatchers(HttpMethod.POST,"/api/**").hasAnyAuthority("ADM","PRO")
 						.requestMatchers("/api/**").hasAnyAuthority("ADM","PRO")
 						.requestMatchers("/**").permitAll()
 				)

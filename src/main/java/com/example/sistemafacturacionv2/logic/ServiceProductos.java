@@ -10,8 +10,7 @@ public class ServiceProductos {
     @Autowired
  private ProductoRepository productoRepository;
 
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+
     public Iterable<Producto> productoFindAll() {
         return productoRepository.findAll();
     }
@@ -44,7 +43,5 @@ public class ServiceProductos {
         return productoRepository.findByProveedorAndNombre(idProveedor, name);
     }
 
-    public Proveedor readProveedor(String id) {
-       return proveedorRepository.findById(id).get();
-  }
+
 }
