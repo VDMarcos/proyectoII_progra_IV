@@ -67,7 +67,7 @@ function render_menu() {
                     <li id="bienvenidalink"><a href="#"> Bienvenida</a></li>
                     <li id="clienteslink"><a href="#"> Clientes</a></li>
                     <li id="productoslink"><a href="#"> Productos</a></li>  
-                    <li id="productoslink"><a href="#"> Facturar</a></li>            
+                    <li id="facturarlink"><a href="#"> Facturar</a></li>            
                     <li id="logoutlink"><a href="#"> Logout</a></li>
                 </ul>
             </div>

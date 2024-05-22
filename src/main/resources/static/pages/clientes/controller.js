@@ -8,68 +8,6 @@ var state ={
     nomBus: ""
 }
 
-async function checkuserC(){
-    let request = new Request(api_login+'/current-user', {method: 'GET'});
-    const response = await fetch(request);
-    if (response.ok) {
-        loginstate.logged = true;
-        loginstate.user = await response.json();
-    }
-    else {
-        loginstate.logged = false;
-    }
-}
-
-async function menu(){
-    await checkuserC();
-    if (!loginstate.logged
-        && document.location.pathname != "/pages/login/view.html") {
-        document.location = "/pages/login/view.html";
-        throw new Error("Usuario no autorizado");
-    }
-
-    await fetchAndListClientes(loginstate.user.id);
-    await render_menuC();
-}
-
-function render_menuC() {
-        html = `
-            <div class="logo">
-                <span>Sistema<span></span></span>
-                 <img src="/Images/logo.png">
-            </div>
-            <div>
-                <ul class="Menu">
-                    <li id="bienvenidalink"><a href="#"> Bienvenida</a></li>
-                    <li id="clienteslink"><a href="#"> Clientes</a></li>
-                    <li id="productoslink"><a href="#"> Productos</a></li>                    
-                    <li id="logoutlink"><a href="#"> Logout</a></li>
-                </ul>
-            </div>
-            <div class="user">&nbsp &nbsp ${loginstate.user.id}</div>
-        `;
-
-        html2 = `
-            <div class="Footer">
-            <div class="logoF">
-                <span>@factura_electronica.com</span>
-                 <img class ="logoF" src="/Images/logo.png">
-            </div>
-        `;
-        document.querySelector('#menu').innerHTML = html;
-        document.querySelector('#footer').innerHTML = html2;
-        document.querySelector("#menu #logoutlink").addEventListener('click', logout);
-        document.querySelector("#menu #bienvenidalink").addEventListener('click', e => {
-            document.location = "/pages/login/view.html";
-        });
-        document.querySelector("#menu #clienteslink").addEventListener('click', e => {
-            document.location = "/pages/clientes/view.html";
-        });
-        document.querySelector("#menu #productoslink").addEventListener('click', e => {
-            document.location = "/pages/productos/view.html";
-        });
-}
-
 document.addEventListener("DOMContentLoaded",loaded);
 document.addEventListener("visibilitychange", unloaded);
 
@@ -85,21 +23,25 @@ async function loaded(event){
     document.getElementById("Crear").addEventListener("click",add);
     //document.querySelector("#itemview #cancelar").addEventListener("click",toggle_itemview);
 
-    state_json = sessionStorage.getItem("clientes");
+    state_json = sessionStorage.getItem("Listclientes");
     if(!state_json) {
         fetchAndListClientes(loginstate.user.id);
     }
-   else{
-       state = JSON.parse(state_json);
-       document.getElementById("search").value = state.nomBus;
-       await search();
-       sessionStorage.setItem("clientes", JSON.stringify(state));
-   }
+    else{
+        state=JSON.parse(state_json);
+        if(state.mode=="search"){
+            document.getElementById("search").value=state.nomBus;
+            await search();
+        }
+        else{
+            fetchAndListClientes(loginstate.user.id);
+        }
+    }
 }
 
 async function unloaded(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
-        sessionStorage.setItem("clientes", JSON.stringify(state));
+        sessionStorage.setItem("Listclientes", JSON.stringify(state));
     }
 }
 
@@ -135,6 +77,7 @@ function render_list_Clientes_item(listado,item){
 function search(){
     nombreBusqueda = document.getElementById("search").value;
     state.nomBus = nombreBusqueda;
+    state.mode="search";
     const request = new Request(api+`/search?nombre=${nombreBusqueda}`,
         {method: 'GET', headers: { }});
     (async ()=>{
@@ -155,7 +98,7 @@ function add(){
         const response = await fetch(request);
         if (!response.ok) {errorMessageC(response.status);return;}
         //toggle_itemview()
-       await fetchAndListClientes(loginstate.user.id);
+        await fetchAndListClientes(loginstate.user.id);
         document.getElementById("Crear").value = "Crear";
     })();
 }
