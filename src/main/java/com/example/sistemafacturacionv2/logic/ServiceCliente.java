@@ -23,16 +23,14 @@ public class ServiceCliente {
     }
 
     public void addCliente(Cliente cliente) {
-        List<Cliente> clientes = clienteRepository.findByProveedor(cliente.getProveedoridc());
-        for (Cliente c : clientes) {
-            if (c.getId().equals(cliente.getId())) {
-                clienteRepository.delete(c);
-            }
+        if (clienteRepository.findByProveedorAndIdentificacion(cliente.getProveedoridc(), cliente.getId()) != null) {
+            clienteRepository.delete(clienteRepository.findByProveedorAndIdentificacion(cliente.getProveedoridc(), cliente.getId()));
         }
         clienteRepository.save(cliente);
     }
 
-    public Cliente getClienteById(String id) {
-        return clienteRepository.findfById(id);
+    public Cliente getClienteById(String pro, String id) {
+        return clienteRepository.findByProveedorAndIdentificacion(
+                pro,id);
     }
 }

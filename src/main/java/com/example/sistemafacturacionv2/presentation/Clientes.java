@@ -1,8 +1,10 @@
 package com.example.sistemafacturacionv2.presentation;
 
 import com.example.sistemafacturacionv2.logic.Cliente;
+import com.example.sistemafacturacionv2.security.UserDetailsImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.example.sistemafacturacionv2.logic.ServiceCliente;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,14 +20,23 @@ public class Clientes {
 
     private String idAc;
 
-    @GetMapping("/{id}")
-    List<Cliente> getAll(@PathVariable String id) {
-        idAc = id;
-        List<Cliente> clientes = serviceCliente.getClientesByProveedor(id);
-        for (Cliente cliente : clientes) {
-            cliente.setproveedorByProveedoridc2(null);
+    @GetMapping("/get")
+    List<Cliente> getAll(@AuthenticationPrincipal UserDetailsImp user) {
+        idAc = user.getUsername();
+        try {
+            List<Cliente> clientes = serviceCliente.getClientesByProveedor(idAc);
+            for (Cliente cliente : clientes) {
+                cliente.setproveedorByProveedoridc2(null);
+                System.out.println(cliente.getId());
+                System.out.println(cliente.getNombre());
+                System.out.println(cliente.getCorreo());
+                System.out.println(cliente.getTelefono());
+            }
+            return clientes;
         }
-        return clientes;
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/search")
@@ -40,8 +51,7 @@ public class Clientes {
     @PostMapping("/add")
     void addCliente(@RequestBody Cliente cliente) {
         try {
-            System.out.println(cliente.getNombre());
-            cliente.setProveedoridc(idAc);
+            //cliente.setProveedoridc(idAc);
             serviceCliente.addCliente(cliente);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
@@ -50,7 +60,7 @@ public class Clientes {
 
     @GetMapping("/get/{id}")
     Cliente getCliente(@PathVariable String id) {
-        Cliente cliente = serviceCliente.getClienteById(id);
+        Cliente cliente = serviceCliente.getClienteById(idAc, id);
         cliente.setproveedorByProveedoridc2(null);
         return cliente;
     }

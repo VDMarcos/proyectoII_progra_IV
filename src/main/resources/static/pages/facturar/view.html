@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facturar</title>
+    <script src="../../js/menu.js"></script>
+    <script src="controller.js"></script>
+    <link rel="stylesheet" href="../../css/facturar.css">
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/menu.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+</head>
+<body>
+<header class="header" id="menu"></header>
+<div class = "body2">
+    <div class = "table-container1">
+        <table class = "table">
+            <caption>Facturar</caption>
+            <tbody id="listFac">
+
+                <th></th>
+                <th>Proveedor:</th>
+                <th id="prov"> </th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <div id="formCliente">
+                    <th></th>
+                    <th>Cliente: </th>
+                    <th>
+                        <input type="text" id="search" name="nombre" placeholder="Buscar cliente por codigo...">
+                    <td>
+                        <img id = "edit2" src="../../Images/check.png"/></a>
+                    </td>
+                    <td>
+                        <img id = "edit1" src="../../Images/iconoBuscar.png"/>
+                    </td>
+                    </th>
+                    <th></th>
+                </div>
+            </tr>
+             <tr>
+                    <div id="formProducto">
+                        <th></th>
+                        <th>Producto: </th>
+                        <th>
+                            <input type="text" id="search2" name="nombre" placeholder="Buscar producto por codigo...">
+                        <td>
+                            <img id = "edit4" src="../../Images/check.png"/>
+                        </td>
+                        <td>
+                            <img id = "edit5" src="../../Images/iconoBuscar.png"/>
+                        </td>
+                        </th>
+                        <th></th>
+                    </div>
+             </tr>
+            <tr>
+                <th></th>
+                <th>Cant.</th>
+                <th>Descripcion</th>
+                <th>Precio</th>
+                <th>Monto</th>
+                <th>...</th>
+            </tr>
+            <tr id="detalles">
+                <td colspan="6">
+
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Total:</th>
+                <th id="total"></th>
+                <th></th>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <div class = "align">
+                <input type="submit" id= "guardar" name="accion" value="Guardar" class="boton-submit">
+            </div>
+        </div>
+    </div>
+</div>
+<footer id="footer"></footer>
+</body>
+</html>

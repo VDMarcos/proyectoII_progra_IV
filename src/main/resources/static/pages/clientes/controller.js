@@ -15,38 +15,33 @@ async function loaded(event){
     try{ await menu();} catch(error){return;}
 
     document.getElementById("iconoBuscar").addEventListener("click",search);
-    //document.getElementById("EditarB").hidden=true;
-    //document.getElementById("new").addEventListener("click",ask);
-
-    //document.getElementById("itemoverlay").addEventListener("click",toggle_itemview);
 
     document.getElementById("Crear").addEventListener("click",add);
-    //document.querySelector("#itemview #cancelar").addEventListener("click",toggle_itemview);
 
-    state_json = sessionStorage.getItem("Listclientes");
+    state_json = sessionStorage.getItem("ListaClientes");
     if(!state_json) {
-        fetchAndListClientes(loginstate.user.id);
+        fetchAndListClientes();
     }
     else{
         state=JSON.parse(state_json);
         if(state.mode=="search"){
             document.getElementById("search").value=state.nomBus;
-            await search();
+            //await search();
         }
-        else{
-            fetchAndListClientes(loginstate.user.id);
-        }
+        if(state.mode=="EDIT"){render_item();}
+        if(state.mode=="ADD"){fetchAndListClientes();}
+        render_list_Clientes();
     }
 }
 
 async function unloaded(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
-        sessionStorage.setItem("Listclientes", JSON.stringify(state));
+        sessionStorage.setItem("ListaClientes", JSON.stringify(state));
     }
 }
 
-function fetchAndListClientes(id){
-    const request = new Request(api + `/${id}`, {method: 'GET', headers: { }});
+function fetchAndListClientes(){
+    const request = new Request(api + '/get', {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
@@ -90,6 +85,7 @@ function search(){
 
 function add(){
     load_item();
+    state.mode="ADD";
     if(validate()) return;
     let request = new Request(api+`/add`, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
@@ -97,15 +93,9 @@ function add(){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessageC(response.status);return;}
-        //toggle_itemview()
-        await fetchAndListClientes(loginstate.user.id);
+        fetchAndListClientes();
         document.getElementById("Crear").value = "Crear";
     })();
-}
-
-function toggle_itemview(){
-    document.getElementById("itemoverlay").classList.toggle("active");
-    document.getElementById("itemview").classList.toggle("active");
 }
 
 function load_item(){
@@ -180,7 +170,7 @@ function edit(id){
 }
 
 function render_item(){
-    document.querySelectorAll('#itemview input').forEach( (i)=> {i.classList.remove("invalid");});
+    //document.querySelectorAll('#itemview input').forEach( (i)=> {i.classList.remove("invalid");});
     document.getElementById("idForm").value = state.itemE.id;
     document.getElementById("nombreForm").value = state.itemE.nombre;
     document.getElementById("correoForm").value = state.itemE.correo;

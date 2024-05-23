@@ -45,7 +45,8 @@ public class Login {
         Usuario usuario=new Usuario();
         usuario.setId(user.getUsername());
         usuario.setClave(null);
-        usuario.setRol(user.getPassword());
+        usuario.setRol(user.getUsuario().getRol());
+        System.out.println(usuario.getRol());
         return usuario;
     }
 }
