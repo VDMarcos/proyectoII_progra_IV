@@ -18,13 +18,13 @@ public class Clientes {
     @Autowired
     private ServiceCliente serviceCliente;
 
-    private String idAc;
+    //private String idAc;
 
     @GetMapping("/get")
     List<Cliente> getAll(@AuthenticationPrincipal UserDetailsImp user) {
-        idAc = user.getUsername();
+        //idAc = user.getUsername();
         try {
-            List<Cliente> clientes = serviceCliente.getClientesByProveedor(idAc);
+            List<Cliente> clientes = serviceCliente.getClientesByProveedor(user.getUsername());
             for (Cliente cliente : clientes) {
                 cliente.setproveedorByProveedoridc2(null);
                 System.out.println(cliente.getId());
@@ -40,8 +40,8 @@ public class Clientes {
     }
 
     @GetMapping("/search")
-    List<Cliente> getByName(@RequestParam String nombre) {
-        List<Cliente> clientes = serviceCliente.getClientesByNombre(idAc, nombre);
+    List<Cliente> getByName(@AuthenticationPrincipal UserDetailsImp user, @RequestParam String nombre) {
+        List<Cliente> clientes = serviceCliente.getClientesByNombre(user.getUsername(), nombre);
         for (Cliente cliente : clientes) {
             cliente.setproveedorByProveedoridc2(null);
         }
@@ -59,8 +59,8 @@ public class Clientes {
     }
 
     @GetMapping("/get/{id}")
-    Cliente getCliente(@PathVariable String id) {
-        Cliente cliente = serviceCliente.getClienteById(idAc, id);
+    Cliente getCliente(@AuthenticationPrincipal UserDetailsImp user, @PathVariable String id) {
+        Cliente cliente = serviceCliente.getClienteById(user.getUsername(), id);
         cliente.setproveedorByProveedoridc2(null);
         return cliente;
     }
