@@ -22,6 +22,25 @@ public class ServiceFactura {
     }
 
     public Producto getProductoByCod(String pro, String cod) {
-        return productoRepository.findByProveedorAndCodigo(pro, cod);
+        Producto producto = productoRepository.findByProveedorAndCodigo(pro, cod);
+        if (producto != null) {
+            producto.setCantidad(producto.getCantidad() - 1);
+            productoRepository.save(producto);
+            return producto;
+        } else {
+            return null;
+        }
+    }
+
+    public Producto getProductoById(String pro, String id) {
+        Producto producto = productoRepository.findByProveedorAndCodigo(pro, id);
+        if (producto != null) {
+            producto.setCantidad(producto.getCantidad() + 1);
+            productoRepository.save(producto);
+            return producto;
+        } else {
+            return null;
+        }
     }
 }
+

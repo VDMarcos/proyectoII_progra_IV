@@ -19,6 +19,8 @@ public class Facturar {
 
     private String idAc;
 
+    private List<Producto> productos;
+
     @GetMapping("/searchC")
     Cliente getByNameC(@AuthenticationPrincipal UserDetailsImp user, @RequestParam String nombreC) {
         idAc = user.getUsername();
@@ -37,6 +39,21 @@ public class Facturar {
         idAc = user.getUsername();
         try {
             Producto producto = serviceFactura.getProductoByCod(idAc, nombreC);
+            producto.setProveedorByProveedoridp(null);
+            if(producto.getCantidad() == 0){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+            return producto;
+        }
+        catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/get/{id}")
+    Producto getById(@PathVariable String id) {
+        try {
+            Producto producto = serviceFactura.getProductoById(idAc, id);
             producto.setProveedorByProveedoridp(null);
             return producto;
         }

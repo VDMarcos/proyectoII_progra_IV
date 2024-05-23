@@ -1,64 +1,46 @@
-var api=backend+'/facturar';
+var api = backend + '/facturar';
 
-var state ={
-    listProductos: new Array(),
-    Cliente: {id:"", nombre:"", correo:"", telefono:"", proveedoridc:""},
-    Producto: {codigo:"", nombre:"",cantidad:"", precio:0,proveedor:""},
-    itemF : {codigo:"", total:0,cliente:"", precio:0,proveedor:""},
-    item : {cantidad:0, monto:0, producto:"", cliente:"", facturaID:""},
+var state = {
+    listProductos: [],
+    Cliente: { id: "", nombre: "", correo: "", telefono: "", proveedoridc: "" },
+    Producto: { codigo: "", nombre: "", cantidad: "", precio: 0, proveedor: "" },
+    itemF: { codigo: "", total: 0, cliente: "", precio: 0, proveedor: "" },
+    item: { cantidad: 0, monto: 0, producto: "", cliente: "", facturaID: "", codigo: "" },
     mode: "" // ADD, EDIT
 }
 
-document.addEventListener("DOMContentLoaded",loaded);
-document.addEventListener('visibilitychange',unloaded)
+document.addEventListener("DOMContentLoaded", loaded);
+document.addEventListener('visibilitychange', unloaded);
 
-async function loaded(event){
-    try{await menu();} catch(error){return;}
+async function loaded(event) {
+    try { await menu(); } catch (error) { return; }
 
-    document.getElementById("prov").textContent=loginstate.user.id;
+    document.getElementById("prov").textContent = loginstate.user.id;
 
-    document.getElementById("edit2").addEventListener("click",searchC);
-    document.getElementById("edit1").addEventListener("click",searchC);
-    document.getElementById("edit4").addEventListener("click",searchP);
-    document.getElementById("edit5").addEventListener("click",searchP);
-    //document.getElementById("edit6").addEventListener("click",removeProducto);
-   // document.getElementById("edit7").addEventListener("click",subir);
-   // document.getElementById("edit8").addEventListener("click",bajar);
-    document.getElementById("guardar").addEventListener("click",add);
+    document.getElementById("edit2").addEventListener("click", searchC);
+    document.getElementById("edit1").addEventListener("click", searchC);
+    document.getElementById("edit4").addEventListener("click", searchP);
+    document.getElementById("edit5").addEventListener("click", searchP);
+    document.getElementById("guardar").addEventListener("click", add);
 
+    let state_json = sessionStorage.getItem("factura");
 
-    state_json=sessionStorage.getItem("factura");
-
-    if(!state_json){
-        //render();
-    }else{
-        state=JSON.parse(state_json);
-        if(state.mode=="EDIT"){render();}
-    }
-    state.listProductos=[];
-    state.Cliente.codigo="undefined";
-}
-
-async function unloaded(event){
-    if (document.visibilityState=="hidden"&& loginstate.logged){
-        sessionStorage.setItem("factura",JSON.stringify(state));
+    if (state_json) {
+        state = JSON.parse(state_json);
+        render();
     }
 }
 
-
-function F(){
-    var listado=document.getElementById("listFac");
-    listado.innerHTML="";
-
-    state.listProductos.forEach( itemP=>render_factura(listado,itemP));
-
+async function unloaded(event) {
+    if (document.visibilityState == "hidden" && loginstate.logged) {
+        sessionStorage.setItem("factura", JSON.stringify(state));
+    }
 }
 
 function render() {
     const listFac = document.getElementById("listFac");
     listFac.innerHTML = ''; // Limpiar todo el contenido existente
 
-    // Agregar elementos estáticos como el encabezado de Proveedor, Cliente y Producto
     const staticRows = `
         <tr>
             <th></th>
@@ -109,231 +91,184 @@ function render() {
 
     listFac.insertAdjacentHTML('beforeend', staticRows);
 
-    // Agregar detalles de productos
     state.listProductos.forEach((itemP, index) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>
                 <img id="edit6" src="../../Images/delete.png"/>
             </td>
-            <td>${state.item.cantidad}</td>
-            <td>${state.item.producto}</td>
-            <td>${state.item.precio}</td>
-            <td>${state.item.monto}</td>
+            <td>${itemP.cantidad}</td>
+            <td>${itemP.nombre}</td>
+            <td>${itemP.precio}</td>
+            <td>${itemP.cantidad * itemP.precio}</td>
             <td>
                 <img id="edit7" src="../../Images/subir.png"/>
                 <img id="edit8" src="../../Images/bajar.png"/>
             </td>
         `;
 
-        // Añadir estilo de alineación centrada a todas las celdas de la fila
         tr.querySelectorAll("td").forEach(td => {
             td.style.textAlign = "center";
         });
 
-        // Agregar la fila al tbody
+        tr.querySelector(`#edit6`).addEventListener("click", () => { deleteD(itemP.codigo); });
+        tr.querySelector(`#edit7`).addEventListener("click", () => { Aumentar(itemP.codigo); });
+        tr.querySelector(`#edit8`).addEventListener("click", () => { Disminuir(itemP.codigo); });
+
         listFac.appendChild(tr);
     });
 
-    // Agregar elementos estáticos como el total
     const totalRow = `
         <tr>
             <th></th>
             <th></th>
             <th></th>
             <th>Total:</th>
-            <th id="total"></th>
+            <th>${state.itemF.total}</th>
             <th></th>
         </tr>
     `;
     listFac.insertAdjacentHTML('beforeend', totalRow);
 
-    // Asignar eventos después de que el contenido ha sido agregado al DOM
     document.getElementById("edit2").addEventListener("click", searchC);
     document.getElementById("edit1").addEventListener("click", searchC);
     document.getElementById("edit4").addEventListener("click", searchP);
     document.getElementById("edit5").addEventListener("click", searchP);
     document.getElementById("guardar").addEventListener("click", add);
-
-    // Asignar eventos a los botones de edición de cada producto
-    state.listProductos.forEach((itemP, index) => {
-        document.getElementById(`edit6-${index}`).addEventListener("click", () => removeProducto(index));
-        document.getElementById(`edit7-${index}`).addEventListener("click", () => modificarCantidad(index, 1));
-        document.getElementById(`edit8-${index}`).addEventListener("click", () => modificarCantidad(index, -1));
-    });
 }
 
-
-
-// function render() {
-//     const detalles = document.getElementById("detalles");
-//     while (detalles.firstChild) detalles.removeChild(detalles.firstChild);
-//
-//     state.listProductos.forEach((itemP, index) => {
-//         const tr = document.createElement("tr");
-//         tr.className = "table-row-centered"; // Set the class name to match the original table rows
-//         tr.innerHTML = `
-//             <td>
-//                 <img id="edit6" src="../../Images/delete.png"/>
-//             </td>
-//             <td>${state.item.cantidad}</td>
-//             <td>${state.item.producto}</td>
-//             <td>${state.item.precio}</td>
-//             <td>${state.item.monto}</td>
-//             <td>
-//                 <img id="edit7" src="../../Images/subir.png"/>
-//                 <img id="edit8" src="../../Images/bajar.png"/>
-//             </td>
-//         `;
-//
-//         tr.querySelectorAll("td").forEach(td => {
-//             td.style.textAlign = "center";
-//         });
-//
-//         // tr.querySelector(`#edit6-${index}`).addEventListener("click", () => {
-//         //     removeProducto(index);
-//         // });
-//         // tr.querySelector(`#edit7-${index}`).addEventListener("click", () => {
-//         //     modificarCantidad(index, 1);
-//         // });
-//         // tr.querySelector(`#edit8-${index}`).addEventListener("click", () => {
-//         //     modificarCantidad(index, -1);
-//         // });
-//         detalles.appendChild(tr);
-//     });
-//
-
-    //actualizarTotal();
-//}
-
-// function render() {
-//     const detalles = document.getElementById("detalles");
-//     detalles.innerHTML = '';
-//
-//     state.listProductos.forEach((itemP, index) => {
-//         const tr = document.createElement("tr");
-//         tr.innerHTML = `
-//             <td>
-//                 <img id="edit6" src="../../Images/delete.png"/>
-//             </td>
-//             <td>${state.item.cantidad}</td>
-//             <td>${state.item.producto}</td>
-//             <td>${state.item.precio}</td>
-//             <td>${state.item.monto}</td>
-//             <td>
-//                 <img id="edit7" src="../../Images/subir.png"/>
-//                 <img id="edit8" src="../../Images/bajar.png"/>
-//             </td>
-//             </tr>
-//         `;
-//
-//         tr.querySelectorAll("td").forEach(td => {
-//             td.style.textAlign = "center";
-//         });
-//         // tr.querySelector(`#edit6-${index}`).addEventListener("click", () => {
-//         //     removeProducto(index);
-//         // });
-//         // tr.querySelector(`#edit7-${index}`).addEventListener("click", () => {
-//         //     modificarCantidad(index, 1);
-//         // });
-//         // tr.querySelector(`#edit8-${index}`).addEventListener("click", () => {
-//         //     modificarCantidad(index, -1);
-//         // });
-//
-//         detalles.appendChild(tr);
-//     });
-//
-//     //actualizarTotal();
-// }
-
-
-function render_item() {
-    document.getElementById("codigo").value = state.item.codigo;
-    document.getElementById("nombre").value = state.item.nombre;
-    document.getElementById("cantidad").value = state.item.cantidad;
-    document.getElementById("precio").value = state.item.precio;
-
+function deleteD(codigo) {
+    state.listProductos = state.listProductos.filter(item => item.codigo !== codigo);
+    total();
+    render();
 }
 
-function add() {
-    load_item();
-    state.mode = "ADD"
-    if (!validate_item()) return;
-    let request = new Request(api, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(state.item)});
-    (async ()=>{
+function Aumentar(codigo){
+    let productoExistente2 = state.listProductos.find(item => item.codigo === state.Producto.codigo);
+    document.getElementById("search2").value = productoExistente2.codigo;
+    searchP();
+}
+
+function Disminuir(codigo){
+    getP(codigo);
+}
+
+function searchP() {
+    state.nombreP = document.getElementById("search2").value;
+    state.mode = "search";
+    const request = new Request(api + `/searchP?nombreC=${state.nombreP}`, { method: 'GET', headers: {} });
+    (async () => {
         const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
-        fetchAndListProductos(loginstate.user.id);
+        if (!response.ok) { errorMessage(response.status); return; }
+        state.Producto = await response.json();
+        let productoExistente = state.listProductos.find(item => item.codigo === state.Producto.codigo);
+        if (productoExistente) {
+            productoExistente.cantidad += 1;
+            productoExistente.monto = productoExistente.cantidad * productoExistente.precio;
+        } else {
+            const nuevoItem = {
+                codigo: state.Producto.codigo,
+                nombre: state.Producto.nombre,
+                cantidad: 1,
+                precio: state.Producto.precio,
+                monto: state.Producto.precio
+            };
+            state.listProductos.push(nuevoItem);
+        }
+        total();
+        render();
     })();
 }
 
-function load_item(){
-    state.item={
-        codigo:document.getElementById("codigo").value,
-        nombre:document.getElementById("nombre").value ,
-        cantidad:document.getElementById("cantidad").value,
-        precio:document.getElementById("precio").value,
-
-    };
-}
-
-function searchC(){
-    state.nombreC = document.getElementById("search").value;
-    state.mode="search";
-    const request = new Request(api+`/searchC?nombreC=${state.nombreC}`,
-        {method: 'GET', headers: { }});
+function getP(id){
+    let request = new Request(api+`/get/${id}`,
+        {method: 'GET', headers: {}});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
+        state.Producto = await response.json();
+        let productoExistente3 = state.listProductos.find(item => item.codigo === state.Producto.codigo);
+        if (productoExistente3&&productoExistente3.cantidad>1) {
+            productoExistente3.cantidad -= 1;
+            productoExistente3.monto = productoExistente3.cantidad * productoExistente3.precio;
+        } else {
+            state.item.cantidad=productoExistente3.cantidad-1;
+            deleteD()
+        }
+        //state.listProductos.push(state.Producto);
+        total();
+        render();
+    })();
+}
+
+function searchC() {
+    state.nombreC = document.getElementById("search").value;
+    state.mode = "search";
+    const request = new Request(api + `/searchC?nombreC=${state.nombreC}`, { method: 'GET', headers: {} });
+    (async () => {
+        const response = await fetch(request);
+        if (!response.ok) { errorMessage(response.status); return; }
         state.Cliente = await response.json();
         render();
     })();
 }
 
-function searchP(){
-    state.nombreP = document.getElementById("search2").value;
-    state.mode="search";
-    const request = new Request(api+`/searchP?nombreC=${state.nombreP}`,
-        {method: 'GET', headers: { }});
-    (async ()=>{
+function total() {
+    let total = 0;
+    state.listProductos.forEach(item => {
+        total += item.monto;
+    });
+    state.itemF.total = total;
+}
+
+function add() {
+    load_item();
+    state.mode = "ADD";
+    if (!validate_item()) return;
+    let request = new Request(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state.item)
+    });
+    (async () => {
         const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
-        state.Producto = await response.json();
-        state.item.producto=state.Producto.nombre;
-        state.item.cantidad=1;
-        state.item.precio=state.Producto.precio;
-        state.item.monto= state.item.cantidad*state.item.precio;
-        state.listProductos.push(state.Producto);
-        render();
+        if (!response.ok) { errorMessage(response.status); return; }
+        fetchAndListProductos(loginstate.user.id);
     })();
 }
 
-function validate_item(){
-    var error=false;
+function load_item() {
+    state.item = {
+        codigo: document.getElementById("codigo").value,
+        nombre: document.getElementById("nombre").value,
+        cantidad: document.getElementById("cantidad").value,
+        precio: document.getElementById("precio").value,
+    };
+}
 
-    document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
+function validate_item() {
+    let error = false;
+    document.querySelectorAll('input').forEach(i => { i.classList.remove("invalid"); });
 
-    if (state.item.codigo.length==0){
+    if (state.item.codigo.length == 0) {
         document.querySelector("#codigo").classList.add("invalid");
-        error=true;
+        error = true;
     }
-
-    if (state.item.nombre.length==0){
+    if (state.item.nombre.length == 0) {
         document.querySelector("#nombre").classList.add("invalid");
-        error=true;
+        error = true;
     }
-    if (state.item.cantidad.length==0){
+    if (state.item.cantidad.length == 0) {
         document.querySelector("#cantidad").classList.add("invalid");
-        error=true;
+        error = true;
     }
-    if (state.item.precio.length==0){
+    if (state.item.precio.length == 0) {
         document.querySelector("#precio").classList.add("invalid");
-        error=true;
+        error = true;
     }
-
-
     return !error;
+}
+
+function errorMessage(status) {
+    console.error("Error: " + status);
 }
