@@ -1,5 +1,6 @@
 package com.example.sistemafacturacionv2.data;
 
+import com.example.sistemafacturacionv2.logic.Producto;
 import com.example.sistemafacturacionv2.logic.Proveedor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,6 +12,9 @@ import java.util.List;
 public interface ProveedorRepository extends CrudRepository<Proveedor, String>{
     @Query("select c from Proveedor c where c.id = ?1")
     List<Proveedor> findByIdSearch(String idProveedor);
+
+    @Query("select c from Proveedor c where c.nombre like %?1%")
+    List<Proveedor> findByNombreSearch(String nombre);
 
 
 }

@@ -22,7 +22,7 @@ async function loaded(event){
 }
 
 async function menuR(){
-    render_menu();
+    render_menuA();
 }
 
 function addUser(){

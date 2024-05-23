@@ -23,7 +23,7 @@ public class registro {
     public void add(@RequestBody Usuario user){
         var encoder = new BCryptPasswordEncoder();
         user.setClave("{bcrypt}"+encoder.encode(user.getClave()));
-        user.setRol("PRO");
+        user.setRol("");
         try{
             service.createUsuario(user);
         }
