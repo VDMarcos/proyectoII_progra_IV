@@ -17,7 +17,7 @@ async function loaded(event){
     state_json=sessionStorage.getItem("productos");
 
     if(!state_json){
-        fetchAndListProductos(loginstate.user.id);
+        fetchAndListProductos();
     }else{
         state=JSON.parse(state_json);
         if(state.mode=="search"){
@@ -34,8 +34,8 @@ async function unloaded(event){
     }
 }
 
-function fetchAndListProductos(proveedor){
-    const request = new Request(api+`/${proveedor}`, {method: 'GET', headers: { }});
+function fetchAndListProductos(){
+    const request = new Request(api, {method: 'GET', headers: { }});
 
     (async ()=>{
         const response = await fetch(request);
