@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facturas</title>
+  <link rel="stylesheet" href="../../css/estilo.css">
+  <link rel="stylesheet" href="../../css/menu.css">
+  <link rel="stylesheet" href="../../css/footer.css">
+  <script src="../../js/menu.js"></script>
+  <script src="controller.js"></script>
+  <link rel="stylesheet" href="../../css/facturas.css">
+</head>
+<body>
+<header class="header" id="menu"></header>
+<div class="table-container">
+  <table class="table">
+    <caption>Facturas</caption>
+    <thead>
+    <tr>
+
+
+      <th>codigo</th>
+      <th>Proveedor</th>
+      <th>Cliente</th>
+      <th>Total</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tr class="searchRow">
+      <td colspan="4">
+        <div  >
+          <input type="text" id="search" name="nombre" placeholder="Buscar...">
+          <td>
+            <input type="image" id="iconoBuscar" src="../../Images/iconoBuscar.png"/>
+          </td>
+        </div>
+    </tr>
+    <tbody id="list">
+    </tbody>
+  </table>
+</div>
+<footer id="footer"></footer>
+</body>
+</html>

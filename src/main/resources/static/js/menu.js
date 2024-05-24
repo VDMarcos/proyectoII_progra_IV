@@ -97,7 +97,8 @@ function render_menu() {
                     <li id="bienvenidalink"><a href="#"> Bienvenida</a></li>
                     <li id="clienteslink"><a href="#"> Clientes</a></li>
                     <li id="productoslink"><a href="#"> Productos</a></li>  
-                    <li id="facturarlink"><a href="#"> Facturar</a></li>            
+                    <li id="facturarlink"><a href="#"> Facturar</a></li>  
+                     <li id="facturaslink"><a href="#"> Facturas</a></li>          
                     <li id="logoutlink"><a href="#"> Logout</a></li>
                 </ul>
             </div>
@@ -124,6 +125,9 @@ function render_menu() {
         });
         document.querySelector("#menu #facturarlink").addEventListener('click', e => {
             document.location = "/pages/facturar/view.html";
+        });
+        document.querySelector("#menu #facturaslink").addEventListener('click', e => {
+            document.location = "/pages/facturas/view.html";
         });
         document.getElementById("user").addEventListener('click', e => {
             document.location = "/pages/usuario/view.html";

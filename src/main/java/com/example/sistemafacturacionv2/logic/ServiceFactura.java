@@ -42,5 +42,7 @@ public class ServiceFactura {
             return null;
         }
     }
+
+    public Iterable<Factura> readAll(){return facturaRepository.findAll();}
 }
 
