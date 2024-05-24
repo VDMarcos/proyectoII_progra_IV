@@ -19,6 +19,7 @@ public class usuario {
     public Proveedor read(@AuthenticationPrincipal UserDetailsImp user){
         try{
             Proveedor proveedor=service.readProveedor(user.getUsername());
+            proveedor.setUsuarioById(null);
             return proveedor;
         }
         catch (Exception ex){
