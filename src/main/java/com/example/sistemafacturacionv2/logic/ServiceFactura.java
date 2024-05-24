@@ -1,6 +1,7 @@
 package com.example.sistemafacturacionv2.logic;
 
 import com.example.sistemafacturacionv2.data.ClienteRepository;
+import com.example.sistemafacturacionv2.data.DetalleRepository;
 import com.example.sistemafacturacionv2.data.FacturaRepository;
 import com.example.sistemafacturacionv2.data.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class ServiceFactura {
     private ProductoRepository productoRepository;
     @Autowired
     private FacturaRepository facturaRepository;
+    @Autowired
+    private DetalleRepository detalleRepository;
 
     public Cliente getClienteById(String pro, String id) {
         return clienteRepository.findByProveedorAndIdentificacion(pro, id);
@@ -44,5 +47,29 @@ public class ServiceFactura {
     }
 
     public Iterable<Factura> readAll(){return facturaRepository.findAll();}
+
+    public List<Factura> getFacturasByProveedor(String pro) {
+        return facturaRepository.findByProveedor(pro);
+    }
+
+    public int getClienteNumById(String pro, String id) {
+        return clienteRepository.findByProveedorAndIdentificacion(pro, id).getNumcliente();
+    }
+
+    public void addFactura(Factura f){
+        facturaRepository.save(f);
+    }
+
+    public Factura readFactura(int cod){
+        return facturaRepository.findByCod(cod);
+    }
+
+    public void addDetalles(List<Detalle> detalles){
+        for (Detalle d : detalles){
+            int cod = facturaRepository.getLast().getCodigo();
+            d.setFacturaidd(cod);
+            detalleRepository.save(d);
+        }
+    }
 }
 

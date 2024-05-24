@@ -23,9 +23,8 @@ public class Facturar {
 
     @GetMapping("/searchC")
     Cliente getByNameC(@AuthenticationPrincipal UserDetailsImp user, @RequestParam String nombreC) {
-        idAc = user.getUsername();
         try {
-            Cliente cliente = serviceFactura.getClienteById(idAc, nombreC);
+            Cliente cliente = serviceFactura.getClienteById(user.getUsername(), nombreC);
             cliente.setproveedorByProveedoridc2(null);
             return cliente;
         }
@@ -51,14 +50,43 @@ public class Facturar {
     }
 
     @GetMapping("/get/{id}")
-    Producto getById(@PathVariable String id) {
+    Producto getById(@AuthenticationPrincipal UserDetailsImp user, @PathVariable String id) {
         try {
-            Producto producto = serviceFactura.getProductoById(idAc, id);
+            Producto producto = serviceFactura.getProductoById(user.getUsername(), id);
             producto.setProveedorByProveedoridp(null);
             return producto;
         }
         catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/addF")
+    void addFactura(@AuthenticationPrincipal UserDetailsImp user, @RequestBody Factura factura, @RequestParam String cl) {
+        try {
+            factura.setProveedoridf(user.getUsername());
+            int cli = serviceFactura.getClienteNumById(factura.getProveedoridf(), cl);
+            factura.setClientenum(cli);
+            System.out.println(factura.getProveedoridf());
+            System.out.println(factura.getClientenum());
+            serviceFactura.addFactura(factura);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/addD")
+    void addFactura(@AuthenticationPrincipal UserDetailsImp user, @RequestBody List<Detalle> detalles) {
+        try {
+            System.out.println(detalles);
+            for(Detalle d : detalles) {
+                String c= String.valueOf(d.getCodigo());
+                System.out.println(c);
+                d.setProductoidd(c);
+            }
+            serviceFactura.addDetalles(detalles);
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
     }
 

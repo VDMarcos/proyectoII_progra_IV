@@ -225,24 +225,36 @@ function add() {
     load_item();
     state.mode = "ADD";
     if (!validate_item()) return;
-    let request = new Request(api, {
+    const request = new Request(api + `/addF?cl=${state.Cliente.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(state.item)
+        body: JSON.stringify(state.itemF)
     });
     (async () => {
         const response = await fetch(request);
         if (!response.ok) { errorMessage(response.status); return; }
-        fetchAndListProductos(loginstate.user.id);
+        addDetalles();
+    })();
+}
+
+function addDetalles(){
+    let request = new Request(api+`/addD`, {method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(state.listProductos)});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}
+        state.listProductos=[];
+        state.itemF.total=0;
+        state.Cliente.id = "";
+        render();
     })();
 }
 
 function load_item() {
-    state.item = {
-        codigo: document.getElementById("codigo").value,
-        nombre: document.getElementById("nombre").value,
-        cantidad: document.getElementById("cantidad").value,
-        precio: document.getElementById("precio").value,
+    state.itemF = {
+        cliente: state.Cliente.id,
+        total: state.itemF.total,
     };
 }
 
@@ -250,24 +262,15 @@ function validate_item() {
     let error = false;
     document.querySelectorAll('input').forEach(i => { i.classList.remove("invalid"); });
 
-    if (state.item.codigo.length == 0) {
-        document.querySelector("#codigo").classList.add("invalid");
+    if (state.Cliente.id === "") {
+        //document.querySelector("#codigo").classList.add("invalid");
         error = true;
-    }
-    if (state.item.nombre.length == 0) {
-        document.querySelector("#nombre").classList.add("invalid");
-        error = true;
-    }
-    if (state.item.cantidad.length == 0) {
-        document.querySelector("#cantidad").classList.add("invalid");
-        error = true;
-    }
-    if (state.item.precio.length == 0) {
-        document.querySelector("#precio").classList.add("invalid");
-        error = true;
-    }
-    if (error) {
         errorMessageF(405);
+    }
+    if (state.listProductos.length === 0) {
+        //document.querySelector("#nombre").classList.add("invalid");
+        error = true;
+        errorMessageF(406);
     }
     return !error;
 }
@@ -276,10 +279,10 @@ function errorMessageF(code) {
     let message;
     switch (code) {
         case 405:
-            message = "Por favor, complete todos los campos.";
+            message = "Por favor, agregue un cliente.";
             break;
-        case 409:
-            message = "Error al añadir el item, debido a que, esta repetido. Intente nuevamente.";
+        case 406:
+            message = "Por favor, agregue al menos 1 producto.";
             break;
         default:
             message = "Ha ocurrido un error.";
