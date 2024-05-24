@@ -98,6 +98,7 @@ function add(){
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         fetchAndListProductos();
+        limpiar();
     })();
 }
 
@@ -123,6 +124,13 @@ function search(){
         console.log("Response list: ", state.list);
         render_list();
     })();
+}
+
+function limpiar(){
+    document.getElementById("codigo").value = "";
+    document.getElementById("nombre").value = "";
+    document.getElementById("cantidad").value= "";
+    document.getElementById("precio").value= "";
 }
 
 function validate_item(){

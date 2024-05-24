@@ -159,7 +159,7 @@ function searchP() {
     const request = new Request(api + `/searchP?nombreC=${state.nombreP}`, { method: 'GET', headers: {} });
     (async () => {
         const response = await fetch(request);
-        if (!response.ok) { errorMessage(response.status); return; }
+        if (!response.ok) { errorMessageF(response.status); return; }
         state.Producto = await response.json();
         let productoExistente = state.listProductos.find(item => item.codigo === state.Producto.codigo);
         if (productoExistente) {
@@ -207,7 +207,7 @@ function searchC() {
     const request = new Request(api + `/searchC?nombreC=${state.nombreC}`, { method: 'GET', headers: {} });
     (async () => {
         const response = await fetch(request);
-        if (!response.ok) { errorMessage(response.status); return; }
+        if (!response.ok) { errorMessageF(response.status); return; }
         state.Cliente = await response.json();
         render();
     })();
@@ -266,9 +266,23 @@ function validate_item() {
         document.querySelector("#precio").classList.add("invalid");
         error = true;
     }
+    if (error) {
+        errorMessageF(405);
+    }
     return !error;
 }
 
-function errorMessage(status) {
-    console.error("Error: " + status);
+function errorMessageF(code) {
+    let message;
+    switch (code) {
+        case 405:
+            message = "Por favor, complete todos los campos.";
+            break;
+        case 409:
+            message = "Error al añadir el item, debido a que, esta repetido. Intente nuevamente.";
+            break;
+        default:
+            message = "Ha ocurrido un error.";
+    }
+    window.alert(message);
 }
