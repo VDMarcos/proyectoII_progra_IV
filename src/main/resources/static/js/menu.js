@@ -101,7 +101,7 @@ function render_menu() {
                     <li id="logoutlink"><a href="#"> Logout</a></li>
                 </ul>
             </div>
-            <div class="user">&nbsp &nbsp ${loginstate.user.id}</div>
+            <div class="user" id="user">&nbsp &nbsp ${loginstate.user.id}</div>
         `;
         html2 = `
             <div class="Footer">
@@ -124,6 +124,9 @@ function render_menu() {
         });
         document.querySelector("#menu #facturarlink").addEventListener('click', e => {
             document.location = "/pages/facturar/view.html";
+        });
+        document.getElementById("user").addEventListener('click', e => {
+            document.location = "/pages/usuario/view.html";
         });
     }
 }

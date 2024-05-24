@@ -1,0 +1,48 @@
+.form{
+    width: 30%;
+    margin: auto;
+    background-color: lightgrey;
+    border-radius: 10px;
+    align-self: center;
+}
+
+.form div {
+    margin-bottom: 10px;
+}
+
+.form div div {
+    margin-bottom: 5px;
+}
+
+.form div label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form div input[type="text"] {
+    width: calc(100% - 160px);
+    padding: 5px;
+    box-sizing: border-box;
+}
+.form div input[type="submit"]{
+    display: flex;
+    align-self: center;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.error-feedback {
+    color: red;             /* Color del texto */
+    font-size: 14px;        /* Tamaño de la fuente */
+    margin-top: 5px;        /* Espacio superior */
+    margin-bottom: 10px;    /* Espacio inferior */
+    background-color: #ffe6e6; /* Color de fondo */
+    border: 1px solid #ffcccc; /* Borde */
+    padding: 10px;          /* Espaciado interno */
+    border-radius: 4px;     /* Bordes redondeados */
+}

@@ -53,7 +53,7 @@ function toggle_itemview(){
 
 function addProveedor(){
     load_itemP();
-    //if(!validate_item()) return;
+    if(!validate_itemp()) return;
     let request = new Request(api+"/proveedor", {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(state1.item)});
@@ -74,3 +74,46 @@ function load_itemP(){
     };
 }
 
+function validate_itemp(){
+    var error=false;
+
+    document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
+
+    if (state1.item.id.length==0){
+        document.querySelector("#idP").classList.add("invalid");
+        error=true;
+    }
+
+    if (state1.item.nombre.length==0){
+        document.querySelector("#nombre").classList.add("invalid");
+        error=true;
+    }
+    if (state1.item.correo.length==0){
+        document.querySelector("#correo").classList.add("invalid");
+        error=true;
+    }
+    if (state1.item.telefono.length==0){
+        document.querySelector("#telefono").classList.add("invalid");
+        error=true;
+    }
+
+
+    return !error;
+}
+
+function validate_item(){
+    var error=false;
+
+    document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
+
+    if (state.item.id.length==0){
+        document.querySelector("#id").classList.add("invalid");
+        error=true;
+    }
+
+    if (state.item.clave.length==0){
+        document.querySelector("#claveUser").classList.add("invalid");
+        error=true;
+    }
+    return !error;
+}

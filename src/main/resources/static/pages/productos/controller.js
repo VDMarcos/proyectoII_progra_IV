@@ -67,7 +67,7 @@ function render_list_item(listado,item){
 }
 
 function edit(codigo){
-    proveedorId=loginstate.user.id;
+
     let request = new Request(api+`/edit/${codigo}`,
         {method: 'GET', headers: {}});
     (async ()=>{
@@ -97,7 +97,7 @@ function add(){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        fetchAndListProductos(loginstate.user.id);
+        fetchAndListProductos();
     })();
 }
 
