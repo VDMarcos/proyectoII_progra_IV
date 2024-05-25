@@ -18,9 +18,7 @@ async function loaded(event) {
     document.getElementById("prov").textContent = loginstate.user.id;
 
     document.getElementById("edit2").addEventListener("click", searchC);
-    document.getElementById("edit1").addEventListener("click", searchC);
     document.getElementById("edit4").addEventListener("click", searchP);
-    document.getElementById("edit5").addEventListener("click", searchP);
     document.getElementById("guardar").addEventListener("click", add);
 
     let state_json = sessionStorage.getItem("factura");
@@ -60,7 +58,7 @@ function render() {
                 <img id="edit2" src="../../Images/check.png"/>
             </td>
             <td>
-                <img id="edit1" src="../../Images/iconoBuscar.png"/>
+                <a href="/pages/clientes/View.html"><img id="edit1" src="../../Images/iconoBuscar.png"/></a>
             </td>
             <td>${state.Cliente.id}</td>
             <th></th>
@@ -75,7 +73,7 @@ function render() {
                 <img id="edit4" src="../../Images/check.png"/>
             </td>
             <td>
-                <img id="edit5" src="../../Images/iconoBuscar.png"/>
+                <a href="/pages/productos/view.html"><img id="edit5" src="../../Images/iconoBuscar.png"/></a>
             </td>
             <th></th>
         </tr>
@@ -131,9 +129,7 @@ function render() {
     listFac.insertAdjacentHTML('beforeend', totalRow);
 
     document.getElementById("edit2").addEventListener("click", searchC);
-    document.getElementById("edit1").addEventListener("click", searchC);
     document.getElementById("edit4").addEventListener("click", searchP);
-    document.getElementById("edit5").addEventListener("click", searchP);
     document.getElementById("guardar").addEventListener("click", add);
 }
 
