@@ -4,6 +4,7 @@ var state = {
     listProductos: [],
     Cliente: { id: "", nombre: "", correo: "", telefono: "", proveedoridc: "" },
     Producto: { codigo: "", nombre: "", cantidad: "", precio: 0, proveedor: "" },
+    pp:"",
     itemF: { codigo: "", total: 0, cliente: "", precio: 0, proveedor: "" },
     item: { cantidad: 0, monto: 0, producto: "", cliente: "", facturaID: "", codigo: "" },
     mode: "" // ADD, EDIT
@@ -21,12 +22,29 @@ async function loaded(event) {
     document.getElementById("edit4").addEventListener("click", searchP);
     document.getElementById("guardar").addEventListener("click", add);
 
+
     let state_json = sessionStorage.getItem("factura");
 
     if (state_json) {
         state = JSON.parse(state_json);
-        render();
     }
+
+    let client = sessionStorage.getItem("idCliente");
+
+    if (client) {
+        state.Cliente.id = client;
+        sessionStorage.removeItem("idCliente");
+    }
+
+    let product = sessionStorage.getItem("idProducto");
+
+    if (product) {
+        state.pp = product;
+        searchP();
+        sessionStorage.removeItem("idProducto");
+    }
+
+    render();
 }
 
 async function unloaded(event) {
@@ -140,7 +158,7 @@ function deleteD(codigo) {
 }
 
 function Aumentar(codigo){
-    let productoExistente2 = state.listProductos.find(item => item.codigo === state.Producto.codigo);
+    let productoExistente2 = state.listProductos.find(item => item.codigo === codigo);
     document.getElementById("search2").value = productoExistente2.codigo;
     searchP();
 }
@@ -151,6 +169,9 @@ function Disminuir(codigo){
 
 function searchP() {
     state.nombreP = document.getElementById("search2").value;
+    if(state.nombreP===""){
+        state.nombreP=state.pp;
+    }
     state.mode = "search";
     const request = new Request(api + `/searchP?nombreC=${state.nombreP}`, { method: 'GET', headers: {} });
     (async () => {

@@ -64,9 +64,15 @@ function render_list_Clientes_item(listado,item){
 					<td>${item.correo}</td>
 					<td>${item.telefono}</td>
                     <td id="editC"><img src="../../Images/editar.png" id="edit1"></td>`;
+    tr.querySelector("#checkC").addEventListener("click",()=>{addC(item.id);});
     tr.querySelector("#editC").addEventListener("click",()=>{edit(item.id);});
     //tr.querySelector("#checkC").addEventListener("click",()=>{remove(item.id);})   // aca hay que agregar la funcionalidad del check
     listado.append(tr);
+}
+
+function addC(id){
+    sessionStorage.setItem("idCliente", id);
+    window.location.href = "/pages/facturar/view.html";
 }
 
 function search(){

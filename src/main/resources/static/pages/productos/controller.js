@@ -61,9 +61,15 @@ function render_list_item(listado,item){
 					<td>${item.cantidad}</td>
 					<td>${item.precio}</td>
 					<td id='edit4'><img src='../../Images/editar.png'></td>`;
+    tr.querySelector("#check").addEventListener("click",()=>{addP(item.codigo);});
     tr.querySelector("#edit4").addEventListener("click",()=>{edit(item.codigo);});
 
     listado.append(tr);
+}
+
+function addP(id){
+    sessionStorage.setItem("idProducto", id);
+    window.location.href = "/pages/facturar/view.html";
 }
 
 function edit(codigo){
