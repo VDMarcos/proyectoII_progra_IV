@@ -2,8 +2,10 @@ var api=backend+'/facturas';
 
 var state ={
     list: new Array(),
+    detalles: new Array(),
+    det:{productoidd:"", cantidad:0, monto:0},
     item: { codigo: "", total: 0, cliente: "", proveedor: "" },
-    itemF: {codigo:"" , proveedoridf: "", clientenum: "", total:0},
+    itemF: {codigo:"" , proveedoridf: "", clientenum: "", total:0, detallesByCodigo:[]},
     mode: ""
 }
 
@@ -49,13 +51,29 @@ function render_list_item(listado,itemF){
 }
 
 function xml(itemF){
-    contenido=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    const request = new Request(api + `/detalles/${itemF.codigo}`, {method: 'GET', headers: { }});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}
+        state.detalles = await response.json();
+        contenido=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <Factura>
         <codigo>${itemF.codigo}</codigo>
         <proveedoridf>${itemF.proveedoridf}</proveedoridf>
         <clientenum>${itemF.clientenum}</clientenum>
         <total>${itemF.total}</total>
+        <detallesByCodigo>
+         ${state.detalles.map(det =>
+            `<detalle>
+             <codigo>${det.codigo}</codigo>
+             <productoidd>${det.productoidd}</productoidd>
+             <cantidad>${det.cantidad}</cantidad>
+             <monto>${det.monto}</monto>
+             </detalle>`
+        ).join('')}
+        </detallesByCodigo>
     </Factura>`;
-    var blob = new Blob([contenido], {type: "text/xml"});
-    window.open(URL.createObjectURL(blob));
+        var blob = new Blob([contenido], {type: "text/xml"});
+        window.open(URL.createObjectURL(blob));
+    })();
 }
