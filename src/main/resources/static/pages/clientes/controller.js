@@ -72,7 +72,7 @@ function render_list_Clientes_item(listado,item){
 
 function addC(id){
     sessionStorage.setItem("idCliente", id);
-    window.location.href = "/pages/facturar/view.html";
+    window.location.href = "/pages/facturar/view.html"; // aprender para el examen...
 }
 
 function search(){

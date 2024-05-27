@@ -201,7 +201,7 @@ function login(){
         body: JSON.stringify(user)});
     (async ()=>{
         const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
+        if (!response.ok) {errorMessage(401);return;}
         loginstate.user = await response.json();
         if(loginstate.user.rol==="PRO"){document.location="/pages/clientes/view.html";}
         else{
@@ -231,15 +231,14 @@ function logout(event){
     })();
 }
 
-function errorMessage(status,place){
+function errorMessage(status){
+    let message;
     switch(status){
-        case 404: error= "Registro no encontrado"; break;
-        case 409: error="Registro duplicado"; break;
-        case 401: error="Usuario no autorizado"; break;
-        case 403: error="Usuario no tiene derechos"; break;
-        case 405: error="Campos vacios";break;
+        case 404: message = "Registro no encontrado"; break;
+        case 409: message = "Registro duplicado"; break;
+        case 401: message ="Usuario no autorizado, contacte al admin de su área..."; break;
+        case 403: message ="Usuario no tiene derechos"; break;
+        case 405: message ="Campos vacios";break;
     }
-    window.alert(error);
+    window.alert(message);
 }
-
-

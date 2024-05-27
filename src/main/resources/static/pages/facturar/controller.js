@@ -176,7 +176,7 @@ function searchP() {
     const request = new Request(api + `/searchP?nombreC=${state.nombreP}`, { method: 'GET', headers: {} });
     (async () => {
         const response = await fetch(request);
-        if (!response.ok) { errorMessageF(response.status); return; }
+        if (!response.ok) { errorMessageF(407); return; }
         state.Producto = await response.json();
         let productoExistente = state.listProductos.find(item => item.codigo === state.Producto.codigo);
         if (productoExistente) {
@@ -224,7 +224,7 @@ function searchC() {
     const request = new Request(api + `/searchC?nombreC=${state.nombreC}`, { method: 'GET', headers: {} });
     (async () => {
         const response = await fetch(request);
-        if (!response.ok) { errorMessageF(response.status); return; }
+        if (!response.ok) { errorMessageF(408); return; }
         state.Cliente = await response.json();
         render();
     })();
@@ -300,6 +300,12 @@ function errorMessageF(code) {
             break;
         case 406:
             message = "Por favor, agregue al menos 1 producto.";
+            break;
+        case 407:
+            message = "Por favor, agregue un producto.";
+            break;
+        case 408:
+            message = "Por favor, agregue un cliente.";
             break;
         default:
             message = "Ha ocurrido un error.";
